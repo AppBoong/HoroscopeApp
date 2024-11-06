@@ -8,11 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3FA8619E2CD8ED8E00AD5D1F /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 3FA8619D2CD8ED8E00AD5D1F /* ComposableArchitecture */; };
-		3FDEBB102CD8E2400022C2A2 /* HoroscopeAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEBB0F2CD8E2400022C2A2 /* HoroscopeAppApp.swift */; };
-		3FDEBB122CD8E2400022C2A2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEBB112CD8E2400022C2A2 /* ContentView.swift */; };
-		3FDEBB142CD8E2400022C2A2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEBB132CD8E2400022C2A2 /* Item.swift */; };
+		3FBF9B4A2CDB7F10005581C5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBF9B492CDB7F10005581C5 /* main.swift */; };
+		3FBF9B4D2CDB81AD005581C5 /* MainApp in Frameworks */ = {isa = PBXBuildFile; productRef = 3FBF9B4C2CDB81AD005581C5 /* MainApp */; };
 		3FDEBB162CD8E2410022C2A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FDEBB152CD8E2410022C2A2 /* Assets.xcassets */; };
-		3FDEBB1A2CD8E2410022C2A2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FDEBB192CD8E2410022C2A2 /* Preview Assets.xcassets */; };
 		3FDEBB242CD8E2410022C2A2 /* HoroscopeAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEBB232CD8E2410022C2A2 /* HoroscopeAppTests.swift */; };
 		3FDEBB2E2CD8E2410022C2A2 /* HoroscopeAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEBB2D2CD8E2410022C2A2 /* HoroscopeAppUITests.swift */; };
 		3FDEBB302CD8E2410022C2A2 /* HoroscopeAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEBB2F2CD8E2410022C2A2 /* HoroscopeAppUITestsLaunchTests.swift */; };
@@ -36,13 +34,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3FBF9B482CDB7CC3005581C5 /* MainApp */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MainApp; sourceTree = "<group>"; };
+		3FBF9B492CDB7F10005581C5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		3FDEBB0C2CD8E2400022C2A2 /* HoroscopeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoroscopeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3FDEBB0F2CD8E2400022C2A2 /* HoroscopeAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoroscopeAppApp.swift; sourceTree = "<group>"; };
-		3FDEBB112CD8E2400022C2A2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		3FDEBB132CD8E2400022C2A2 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		3FDEBB152CD8E2410022C2A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3FDEBB172CD8E2410022C2A2 /* HoroscopeApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HoroscopeApp.entitlements; sourceTree = "<group>"; };
-		3FDEBB192CD8E2410022C2A2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3FDEBB1F2CD8E2410022C2A2 /* HoroscopeAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HoroscopeAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FDEBB232CD8E2410022C2A2 /* HoroscopeAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoroscopeAppTests.swift; sourceTree = "<group>"; };
 		3FDEBB292CD8E2410022C2A2 /* HoroscopeAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HoroscopeAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +52,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FA8619E2CD8ED8E00AD5D1F /* ComposableArchitecture in Frameworks */,
+				3FBF9B4D2CDB81AD005581C5 /* MainApp in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,13 +73,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3FBF9B4B2CDB81AD005581C5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		3FDEBB032CD8E2400022C2A2 = {
 			isa = PBXGroup;
 			children = (
+				3FBF9B482CDB7CC3005581C5 /* MainApp */,
 				3FDEBB0E2CD8E2400022C2A2 /* HoroscopeApp */,
 				3FDEBB222CD8E2410022C2A2 /* HoroscopeAppTests */,
 				3FDEBB2C2CD8E2410022C2A2 /* HoroscopeAppUITests */,
 				3FDEBB0D2CD8E2400022C2A2 /* Products */,
+				3FBF9B4B2CDB81AD005581C5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,22 +105,11 @@
 		3FDEBB0E2CD8E2400022C2A2 /* HoroscopeApp */ = {
 			isa = PBXGroup;
 			children = (
-				3FDEBB0F2CD8E2400022C2A2 /* HoroscopeAppApp.swift */,
-				3FDEBB112CD8E2400022C2A2 /* ContentView.swift */,
-				3FDEBB132CD8E2400022C2A2 /* Item.swift */,
 				3FDEBB152CD8E2410022C2A2 /* Assets.xcassets */,
 				3FDEBB172CD8E2410022C2A2 /* HoroscopeApp.entitlements */,
-				3FDEBB182CD8E2410022C2A2 /* Preview Content */,
+				3FBF9B492CDB7F10005581C5 /* main.swift */,
 			);
 			path = HoroscopeApp;
-			sourceTree = "<group>";
-		};
-		3FDEBB182CD8E2410022C2A2 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				3FDEBB192CD8E2410022C2A2 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		3FDEBB222CD8E2410022C2A2 /* HoroscopeAppTests */ = {
@@ -152,6 +147,7 @@
 			name = HoroscopeApp;
 			packageProductDependencies = (
 				3FA8619D2CD8ED8E00AD5D1F /* ComposableArchitecture */,
+				3FBF9B4C2CDB81AD005581C5 /* MainApp */,
 			);
 			productName = HoroscopeApp;
 			productReference = 3FDEBB0C2CD8E2400022C2A2 /* HoroscopeApp.app */;
@@ -205,6 +201,7 @@
 				TargetAttributes = {
 					3FDEBB0B2CD8E2400022C2A2 = {
 						CreatedOnToolsVersion = 15.2;
+						LastSwiftMigration = 1520;
 					};
 					3FDEBB1E2CD8E2410022C2A2 = {
 						CreatedOnToolsVersion = 15.2;
@@ -246,7 +243,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FDEBB1A2CD8E2410022C2A2 /* Preview Assets.xcassets in Resources */,
 				3FDEBB162CD8E2410022C2A2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -272,9 +268,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FDEBB122CD8E2400022C2A2 /* ContentView.swift in Sources */,
-				3FDEBB142CD8E2400022C2A2 /* Item.swift in Sources */,
-				3FDEBB102CD8E2400022C2A2 /* HoroscopeAppApp.swift in Sources */,
+				3FBF9B4A2CDB7F10005581C5 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,10 +424,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = HoroscopeApp/HoroscopeApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"HoroscopeApp/Preview Content\"";
 				DEVELOPMENT_TEAM = MU569YV3Y3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -458,6 +452,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -468,10 +463,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = HoroscopeApp/HoroscopeApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"HoroscopeApp/Preview Content\"";
 				DEVELOPMENT_TEAM = MU569YV3Y3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -660,6 +655,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3FA8619C2CD8ED8E00AD5D1F /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		3FBF9B4C2CDB81AD005581C5 /* MainApp */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MainApp;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
