@@ -34,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3FABA9C72CDB956C0039D341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3FBF9B482CDB7CC3005581C5 /* MainApp */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MainApp; sourceTree = "<group>"; };
 		3FBF9B492CDB7F10005581C5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		3FDEBB0C2CD8E2400022C2A2 /* HoroscopeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HoroscopeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,6 +106,7 @@
 		3FDEBB0E2CD8E2400022C2A2 /* HoroscopeApp */ = {
 			isa = PBXGroup;
 			children = (
+				3FABA9C72CDB956C0039D341 /* Info.plist */,
 				3FDEBB152CD8E2410022C2A2 /* Assets.xcassets */,
 				3FDEBB172CD8E2410022C2A2 /* HoroscopeApp.entitlements */,
 				3FBF9B492CDB7F10005581C5 /* main.swift */,
@@ -431,6 +433,7 @@
 				DEVELOPMENT_TEAM = MU569YV3Y3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HoroscopeApp/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -470,6 +473,7 @@
 				DEVELOPMENT_TEAM = MU569YV3Y3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HoroscopeApp/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

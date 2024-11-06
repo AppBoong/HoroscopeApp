@@ -24,8 +24,18 @@ let package = Package(
                 "Alamofire",
                 "Moya",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-                .product(name: "Collections", package: "swift-collections")
+                .product(name: "Collections", package: "swift-collections"),
+                "Feature"
             ]),
+        .target(
+            name: "Feature",
+            dependencies: [
+                "Alamofire",
+                "Moya",
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                .product(name: "Collections", package: "swift-collections")
+            ],
+            path: "Sources/Feature"),
         .testTarget(
             name: "MainAppTests",
             dependencies: ["MainApp"]),

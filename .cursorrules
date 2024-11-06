@@ -1,0 +1,174 @@
+
+```
+# HoroscopeApp Development Coding Conventions
+
+## Project Organization
+
+### 1. Module Structure
+```
+HoroscopeApp/
+├── MainApp/           # Main Feature Module
+├── HoroscopeApp/     # App Entry Point
+├── HoroscopeAppTests/
+└── HoroscopeAppUITests/
+```
+
+### 2. Feature Directory Structure
+```
+MainApp/Sources/MainApp/
+├── Feature/
+│   ├── Horoscope/
+│   │   ├── View/
+│   │   ├── Store/
+│   │   └── Component/
+│   └── Profile/
+       ├── View/
+       ├── Store/
+       └── Component/
+```
+
+### 3. Common Directory Structure
+```
+MainApp/Sources/MainApp/
+├── Common/
+│   ├── Utils/
+│   │   ├── Extensions/
+│   │   └── Protocols/
+│   ├── Components/
+│   └── Resources/
+```
+
+## Critical Guidelines
+
+### 1. Architecture Requirements
+```
+REQUIRED:
+- TCA (The Composable Architecture)
+- SwiftUI
+- Modular Structure
+```
+
+### 2. Required Documentation
+```
+REQUIRED_FILES:
+- Feature/*/README.md      # Feature documentation
+- .swiftlint.yml          # SwiftLint rules
+```
+
+### 3. Dependency Rules
+```
+VERSIONING:
+- ComposableArchitecture: 1.15.2+
+- Alamofire: 5.10.1+
+- Moya: 15.0.3+
+```
+
+## Code Style Guidelines
+
+### 1. File Structure
+```swift
+import SwiftUI
+import ComposableArchitecture
+
+struct HoroscopeView: View {
+    // MARK: - Property
+    let store: StoreOf<Horoscope>
+    
+    // MARK: - Body
+    var body: some View {
+        content
+    }
+    
+    // MARK: - Views
+    @ViewBuilder
+    private var content: some View {
+        // Implementation
+    }
+}
+```
+
+### 2. Naming Conventions 
+```
+PATTERNS:
+
+1. Features
+{Feature}View.swift
+- HoroscopeView.swift
+- ProfileView.swift
+
+2. Reducers
+{Feature}.swift
+- Horoscope.swift
+- Profile.swift
+
+3. Components
+{Feature}{Component}.swift
+- HoroscopeCard.swift
+- ProfileHeader.swift
+```
+
+### 3. State Management
+```swift
+struct Horoscope: Reducer {
+    struct State: Equatable {
+        // State properties
+    }
+    
+    enum Action {
+        // Actions
+    }
+    
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
+            // Implementation
+        }
+    }
+}
+```
+
+### 4. View Modifiers
+```swift
+// PATTERN: Modifier ordering
+View
+    .frame(...)      // 1. Size
+    .padding(...)    // 2. Padding
+    .background(...) // 3. Background
+    .onTapGesture   // 4. Interaction
+```
+
+## Testing Standards
+
+### 1. Test Structure
+```swift
+final class HoroscopeTests: XCTestCase {
+    // MARK: Property
+    private var store: TestStore<Horoscope.State, Horoscope.Action>!
+    
+    // MARK: Setup
+    override func setUp() {
+        super.setUp()
+        store = TestStore(
+            initialState: .init(),
+            reducer: Horoscope()
+        )
+    }
+    
+    // MARK: Test
+    func test_whenActionReceived_thenStateUpdated() async {
+        await store.send(.action) {
+            $0.property = newValue
+        }
+    }
+}
+```
+
+### 2. Test Coverage Requirements
+```
+COVERAGE:
+- Reducers: 90%+ coverage
+- Views: UI tests for critical paths
+- Network: Mock responses required
+```
+```
+
+이 규칙들은 현재 프로젝트의 구조와 사용 중인 라이브러리들(TCA, Alamofire, Moya)에 맞춰져 있습니다. 특히 TCA를 중심으로 한 아키텍처 패턴을 강조했습니다.
