@@ -23,5 +23,4 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
   public func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
     
   }
-  
 }
