@@ -21,7 +21,8 @@ let package = Package(
     .target(
       name: "MainApp",
       dependencies: [
-        "Feature"
+        "Feature",
+        "Core"
       ]),
     .target(
       name: "Core",
@@ -33,6 +34,7 @@ let package = Package(
     .target(
       name: "Feature",
       dependencies: [
+        "Core",
         "Alamofire",
         "Moya",
         .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
