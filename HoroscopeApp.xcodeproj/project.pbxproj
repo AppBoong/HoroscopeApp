@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F393FBE2CF489130004D905 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F393FBD2CF489130004D905 /* Launch Screen.storyboard */; };
 		3FBF9B4A2CDB7F10005581C5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBF9B492CDB7F10005581C5 /* main.swift */; };
 		3FBF9B4D2CDB81AD005581C5 /* MainApp in Frameworks */ = {isa = PBXBuildFile; productRef = 3FBF9B4C2CDB81AD005581C5 /* MainApp */; };
 		3FDEBB162CD8E2410022C2A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FDEBB152CD8E2410022C2A2 /* Assets.xcassets */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F393FBD2CF489130004D905 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		3FABA9C72CDB956C0039D341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3FBF9B482CDB7CC3005581C5 /* MainApp */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MainApp; sourceTree = "<group>"; };
 		3FBF9B492CDB7F10005581C5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			children = (
 				3FABA9C72CDB956C0039D341 /* Info.plist */,
 				3FDEBB152CD8E2410022C2A2 /* Assets.xcassets */,
+				3F393FBD2CF489130004D905 /* Launch Screen.storyboard */,
 				3FDEBB172CD8E2410022C2A2 /* HoroscopeApp.entitlements */,
 				3FBF9B492CDB7F10005581C5 /* main.swift */,
 			);
@@ -239,6 +242,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F393FBE2CF489130004D905 /* Launch Screen.storyboard in Resources */,
 				3FDEBB162CD8E2410022C2A2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
