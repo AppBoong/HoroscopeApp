@@ -62,6 +62,7 @@ public struct HoroscopeView: View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       content(viewStore)
     }
+    .background(Color.red)
   }
   
   // MARK: - Views
@@ -79,6 +80,9 @@ public struct HoroscopeView: View {
         Text(viewStore.dailyHoroscope)
           .padding()
       }
+      
+      Spacer()
     }
+    .frame(width: UIScreen.main.bounds.width)
   }
 }

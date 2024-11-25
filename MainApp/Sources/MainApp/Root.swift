@@ -35,6 +35,7 @@ struct RootView: View {
   // MARK: - Property
   let store: StoreOf<Root>
   
+  @State private var selectedTab: Int = 0
   // MARK: - Body
   var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
@@ -45,7 +46,7 @@ struct RootView: View {
   // MARK: - Views
   @ViewBuilder
   private var content: some View {
-    TabView {
+    TabView(selection: $selectedTab) {
       HoroscopeView(
         store: store.scope(
           state: \.horoscope,
@@ -56,6 +57,7 @@ struct RootView: View {
         Image(systemName: "star")
         Text("운세")
       }
+      .tag(0)
       
       ProfileView(
         store: store.scope(
@@ -67,6 +69,7 @@ struct RootView: View {
         Image(systemName: "person")
         Text("프로필")
       }
+      .tag(1)
     }
   }
 }
