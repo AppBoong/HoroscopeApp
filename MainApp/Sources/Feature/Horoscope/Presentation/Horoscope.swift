@@ -42,20 +42,20 @@ public struct Horoscope: Reducer {
     
     public struct State: Equatable {
         public var selectedDate: Date
-        public var additionalPrompt: String
+        public var includeTime: Bool
         public var horoscopeResult: String
         public var isLoading: Bool
         public var errorMessage: String?
         
         public init(
             selectedDate: Date = Date(),
-            additionalPrompt: String = "",
+            includeTime: Bool = false,
             horoscopeResult: String = "",
             isLoading: Bool = false,
             errorMessage: String? = nil
         ) {
             self.selectedDate = selectedDate
-            self.additionalPrompt = additionalPrompt
+            self.includeTime = includeTime
             self.horoscopeResult = horoscopeResult
             self.isLoading = isLoading
             self.errorMessage = errorMessage
@@ -64,7 +64,7 @@ public struct Horoscope: Reducer {
     
     public enum Action: Equatable {
         case selectDate(Date)
-        case updatePrompt(String)
+        case toggleIncludeTime
         case getHoroscope
         case horoscopeResponse(Result<GPTResponse, HoroscopeError>)
     }
@@ -80,17 +80,17 @@ public struct Horoscope: Reducer {
                 state.selectedDate = date
                 return .none
                 
-            case let .updatePrompt(prompt):
-                state.additionalPrompt = prompt
+            case .toggleIncludeTime:
+                state.includeTime.toggle()
                 return .none
                 
             case .getHoroscope:
                 state.isLoading = true
                 state.errorMessage = nil
                 
-                return .run { [date = state.selectedDate, prompt = state.additionalPrompt] send in
+                return .run { [date = state.selectedDate, includeTime = state.includeTime] send in
                     do {
-                        let response = try await gptClient.getHoroscope(date, prompt)
+                        let response = try await gptClient.getHoroscope(date, "", includeTime)
                         await send(.horoscopeResponse(.success(response)))
                     } catch {
                         let horoscopeError: HoroscopeError
@@ -137,11 +137,6 @@ public struct HoroscopeView: View {
                 VStack(spacing: 20) {
                     dateSelectionSection(viewStore)
                   
-                    promptSection(viewStore)
-                    .onTapGesture {
-                        hideKeyboard()
-                    }
-                  
                     resultSection(viewStore)
                     .onTapGesture {
                         hideKeyboard()
@@ -155,32 +150,50 @@ public struct HoroscopeView: View {
     
     private func dateSelectionSection(_ viewStore: ViewStoreOf<Horoscope>) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("생년월일시 선택")
+            Text("생년월일 선택")
                 .font(.headline)
             
-            DatePicker("생년월일시",
+            DatePicker("생년월일",
                       selection: viewStore.binding(
                         get: \.selectedDate,
                         send: Horoscope.Action.selectDate
                       ),
-                      displayedComponents: [.date, .hourAndMinute])
+                      displayedComponents: [.date])
             .datePickerStyle(.graphical)
             .labelsHidden()
+            
+          HStack(spacing: 5) {
+            Text("태어난 시간 포함")
+            
+            Spacer()
+            
+            
+            
+            Toggle(
+              isOn: viewStore.binding(
+                get: \.includeTime,
+                send: Horoscope.Action.toggleIncludeTime
+              ), label: {
+                if viewStore.includeTime {
+                  DatePicker("시간",
+                             selection: viewStore.binding(
+                              get: \.selectedDate,
+                              send: Horoscope.Action.selectDate
+                             ),
+                             displayedComponents: [.hourAndMinute])
+                  .datePickerStyle(.graphical)
+                  .labelsHidden()
+                }
+              }
+            )
+            .toggleStyle(SwitchToggleStyle(tint: .blue))
+          }
+          .frame(height: 40)
         }
     }
     
-    private func promptSection(_ viewStore: ViewStoreOf<Horoscope>) -> some View {
+    private func resultSection(_ viewStore: ViewStoreOf<Horoscope>) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("추가 요청사항")
-                .font(.headline)
-            
-            TextField("운세에 대해 더 자세히 알고 싶은 점을 입력하세요",
-                     text: viewStore.binding(
-                        get: \.additionalPrompt,
-                        send: Horoscope.Action.updatePrompt
-                     ))
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            
             Button(action: {
                 viewStore.send(.getHoroscope)
             }) {
@@ -194,11 +207,7 @@ public struct HoroscopeView: View {
             }
             .buttonStyle(.borderedProminent)
             .disabled(viewStore.isLoading)
-        }
-    }
-    
-    private func resultSection(_ viewStore: ViewStoreOf<Horoscope>) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
+            
             if !viewStore.horoscopeResult.isEmpty {
                 Text("운세 결과")
                     .font(.headline)

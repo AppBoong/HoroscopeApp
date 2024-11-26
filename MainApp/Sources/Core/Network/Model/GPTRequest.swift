@@ -11,9 +11,9 @@ public struct GPTRequest: Encodable {
         let content: String
     }
     
-    static func create(birthDateTime: Date, additionalPrompt: String) -> GPTRequest {
+    static func create(birthDateTime: Date, additionalPrompt: String, includeTime: Bool) -> GPTRequest {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy년 MM월 dd일 HH시"
+        dateFormatter.dateFormat = includeTime ? "yyyy년 MM월 dd일 HH시" : "yyyy년 MM월 dd일"
         let birthDateString = dateFormatter.string(from: birthDateTime)
         
         let systemPrompt = """
@@ -21,7 +21,7 @@ public struct GPTRequest: Encodable {
         사주명리학과 타로, 점성학에 대한 깊은 이해를 바탕으로 정확하고 통찰력 있는 운세 상담을 제공합니다.
 
         상담 시 다음 원칙을 반드시 지켜주세요:
-        1. 생년월일시를 바탕으로 사주팔자를 분석하여 운세를 풀이합니다.
+        1. 생년월일\(includeTime ? "시" : "")를 바탕으로 사주팔자를 분석하여 운세를 풀이합니다.
         2. 답변은 다음 순서로 구성합니다:
            - 오늘의 총운
            - 금전운/재물운
@@ -35,7 +35,7 @@ public struct GPTRequest: Encodable {
         """
         
         let userPrompt = """
-        [생년월일시]
+        [생년월일\(includeTime ? "시" : "")]
         \(birthDateString)
 
         [추가 문의사항]
