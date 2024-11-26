@@ -2,7 +2,7 @@ import Foundation
 import Moya
 
 public protocol GPTServiceProtocol {
-    func getHoroscope(birthDateTime: Date, additionalPrompt: String, includeTime: Bool) async throws -> GPTResponse
+    func getHoroscope(birthDateTime: Date, additionalPrompt: String, includeTime: Bool, toneStyle: ToneStyle) async throws -> GPTResponse
 }
 
 public final class GPTService: GPTServiceProtocol {
@@ -12,8 +12,8 @@ public final class GPTService: GPTServiceProtocol {
         self.provider = provider
     }
     
-    public func getHoroscope(birthDateTime: Date, additionalPrompt: String, includeTime: Bool) async throws -> GPTResponse {
-        let request = GPTRequest.create(birthDateTime: birthDateTime, additionalPrompt: additionalPrompt, includeTime: includeTime)
+    public func getHoroscope(birthDateTime: Date, additionalPrompt: String, includeTime: Bool, toneStyle: ToneStyle) async throws -> GPTResponse {
+        let request = GPTRequest.create(birthDateTime: birthDateTime, additionalPrompt: additionalPrompt, includeTime: includeTime, toneStyle: toneStyle)
         let target = GPTTarget.getHoroscope(request: request)
         
         do {
