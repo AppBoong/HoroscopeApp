@@ -9,7 +9,15 @@ public final class NetworkProvider: NetworkProviding {
     private let provider: MoyaProvider<MultiTarget>
     
     public init() {
-        self.provider = MoyaProvider<MultiTarget>()
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 30  // 30초 타임아웃
+        configuration.timeoutIntervalForResource = 30
+        
+        let session = Session(configuration: configuration)
+        
+        let plugins: [PluginType] = []
+        
+        self.provider = MoyaProvider<MultiTarget>(session: session, plugins: plugins)
     }
     
     public func request<T: TargetType>(_ target: T) async throws -> Data {
