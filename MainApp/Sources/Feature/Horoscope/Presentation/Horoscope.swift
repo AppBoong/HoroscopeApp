@@ -158,17 +158,21 @@ public struct HoroscopeView: View {
   
   private func dateSelectionSection(_ viewStore: ViewStoreOf<Horoscope>) -> some View {
     VStack(alignment: .leading, spacing: 10) {
-      Text("생년월일 선택")
-        .font(.headline)
-      
-      DatePicker("생년월일",
-                 selection: viewStore.binding(
-                  get: \.selectedDate,
-                  send: Horoscope.Action.selectDate
-                 ),
-                 displayedComponents: [.date])
-      .datePickerStyle(.graphical)
-      .labelsHidden()
+      HStack {
+        Text("생년월일")
+        
+        Spacer()
+        
+        DatePicker("",
+                   selection: viewStore.binding(
+                    get: \.selectedDate,
+                    send: Horoscope.Action.selectDate
+                   ),
+                   displayedComponents: [.date])
+        .datePickerStyle(.compact)
+        .labelsHidden()
+      }
+     
       
       HStack {
         Text("태어난 시간 포함")
@@ -197,12 +201,13 @@ public struct HoroscopeView: View {
       }
       .frame(height: 40)
       
-      
-      VStack(alignment: .leading, spacing: 5) {
+      HStack {
         Text("답변 스타일")
-          .font(.headline)
         
-        Picker("답변 스타일", selection: viewStore.binding(
+        Spacer()
+        
+        Picker("",
+               selection: viewStore.binding(
           get: \.toneStyle,
           send: Horoscope.Action.selectToneStyle
         )) {
@@ -211,9 +216,8 @@ public struct HoroscopeView: View {
               .tag(style)
           }
         }
-        .pickerStyle(.segmented)
+        .pickerStyle(.automatic)
       }
-      .padding(.top, 10)
     }
   }
   
