@@ -7,17 +7,19 @@
 
 import SwiftUI
 import ComposableArchitecture
+
 import Feature
 
 public struct HoroscopeApp: App {
+  
   public init() {}
   
   public var body: some Scene {
     WindowGroup {
-      HoroscopeView(
+      RootView(
         store: Store(
-          initialState: Horoscope.State(),
-          reducer: { Horoscope() }
+          initialState: Root.State(),
+          reducer: { Root() }
         )
       )
     }

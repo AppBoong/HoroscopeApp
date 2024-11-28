@@ -1,19 +1,26 @@
 import SwiftUI
 import ComposableArchitecture
 
-struct Root: Reducer {
-  struct State: Equatable {
+public struct Root: Reducer {
+  public struct State: Equatable {
+    
+    public init() {}
+    
     var horoscope: Horoscope.State = .init()
     var profile: Profile.State = .init()
   }
   
   @CasePathable
-  enum Action: Equatable {
+  public enum Action: Equatable {
     case horoscope(Horoscope.Action)
     case profile(Profile.Action)
   }
   
-  var body: some ReducerOf<Self> {
+  public init() {
+    
+  }
+  
+  public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
       case .horoscope, .profile:
@@ -29,19 +36,24 @@ struct Root: Reducer {
   }
 }
 
-struct RootView: View {
-  // MARK: - Property
-  let store: StoreOf<Root>
+public struct RootView: View {
+  
+  private let store: StoreOf<Root>
   
   @State private var selectedTab: Int = 0
-  // MARK: - Body
-  var body: some View {
+  
+  public init(
+    store: StoreOf<Root>
+  ) {
+    self.store = store
+  }
+  
+  public var body: some View {
     WithViewStore(store, observe: { $0 }) { viewStore in
       content
     }
   }
   
-  // MARK: - Views
   @ViewBuilder
   private var content: some View {
     TabView(selection: $selectedTab) {
