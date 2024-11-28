@@ -1,6 +1,5 @@
 import Foundation
 import Dependencies
-import Core
 
 public struct GPTClient {
     public var getHoroscope: @Sendable (Date, String, Bool, ToneStyle) async throws -> GPTResponse

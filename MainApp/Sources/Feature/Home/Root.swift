@@ -1,8 +1,5 @@
-
 import SwiftUI
 import ComposableArchitecture
-
-import Feature
 
 struct Root: Reducer {
   struct State: Equatable {
@@ -10,6 +7,7 @@ struct Root: Reducer {
     var profile: Profile.State = .init()
   }
   
+  @CasePathable
   enum Action: Equatable {
     case horoscope(Horoscope.Action)
     case profile(Profile.Action)
@@ -22,10 +20,10 @@ struct Root: Reducer {
         return .none
       }
     }
-    Scope(state: \.horoscope, action: /Action.horoscope) {
+    Scope(state: \.horoscope, action: \.horoscope) {
       Horoscope()
     }
-    Scope(state: \.profile, action: /Action.profile) {
+    Scope(state: \.profile, action: \.profile) {
       Profile()
     }
   }
@@ -50,7 +48,7 @@ struct RootView: View {
       HoroscopeView(
         store: store.scope(
           state: \.horoscope,
-          action: Root.Action.horoscope
+          action: \.horoscope
         )
       )
       .tabItem {
@@ -62,7 +60,7 @@ struct RootView: View {
       ProfileView(
         store: store.scope(
           state: \.profile,
-          action: Root.Action.profile
+          action: \.profile
         )
       )
       .tabItem {
