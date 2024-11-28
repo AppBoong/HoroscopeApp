@@ -71,6 +71,7 @@ public struct Horoscope: Reducer {
     case selectToneStyle(Core.ToneStyle)
     case getHoroscope
     case horoscopeResponse(Result<GPTResponse, HoroscopeError>)
+    case routeToDetail
   }
   
   @Dependency(\.gptClient) var gptClient
@@ -127,6 +128,9 @@ public struct Horoscope: Reducer {
         state.isLoading = false
         state.errorMessage = error.localizedDescription
         return .none
+        
+      case .routeToDetail:
+        return .none
       }
     }
   }
@@ -149,6 +153,12 @@ public struct HoroscopeView: View {
             .onTapGesture {
               hideKeyboard()
             }
+          
+          Button {
+            viewStore.send(.routeToDetail)
+          } label: {
+            Text("디테일")
+          }
         }
         .padding()
       }
