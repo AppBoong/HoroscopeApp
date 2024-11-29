@@ -32,14 +32,12 @@ public struct Root: Reducer {
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
-      case .horoscope(.routeToDetail):
+      case .horoscope(.routeToHistory):
         return .send(
           .router(
             .pushPath(
               .horoscope(
-                .detail(
-                  id: "1"
-                )
+                .history
               )
             )
           )
@@ -92,8 +90,8 @@ public struct RootView: View {
             switch path {
             case let .horoscope(path):
               switch path {
-              case let .detail(id):
-                HoroscopeDetailView(id: id)
+              case .history:
+                HoroscopeHistoryView()
                   .navigationBarBackButtonHidden(false)
               case .settings:
                 HoroscopeSettingsView()
@@ -153,8 +151,8 @@ public struct RootView: View {
           switch path {
           case let .horoscope(path):
             switch path {
-            case let .detail(id):
-              HoroscopeDetailView(id: id)
+            case .history:
+              HoroscopeHistoryView()
             case .settings:
               HoroscopeSettingsView()
             }
@@ -179,8 +177,8 @@ public struct RootView: View {
           switch path {
           case let .horoscope(path):
             switch path {
-            case let .detail(id):
-              HoroscopeDetailView(id: id)
+            case .history:
+              HoroscopeHistoryView()
             case .settings:
               HoroscopeSettingsView()
             }

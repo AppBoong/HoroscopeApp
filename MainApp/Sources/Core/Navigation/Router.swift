@@ -59,12 +59,11 @@ public struct Router: Reducer {
           return .none
         }
         
-        // 예시: horoscope://detail?id=123
         if components.scheme == "horoscope" {
           switch components.path {
-          case "/detail":
+          case "/history":
             if let id = components.queryItems?.first(where: { $0.name == "id" })?.value {
-              state.path.append(.horoscope(.detail(id: id)))
+              state.path.append(.horoscope(.history))
             }
           default:
             break

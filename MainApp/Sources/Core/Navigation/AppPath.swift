@@ -16,7 +16,7 @@ public enum AppPath: Equatable, Hashable, Identifiable {
 }
 
 public enum HoroscopePath: Equatable, Hashable {
-  case detail(id: String)
+  case history
   case settings
 }
 

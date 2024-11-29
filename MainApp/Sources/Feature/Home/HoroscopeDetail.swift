@@ -1,14 +1,13 @@
 import SwiftUI
 import ComposableArchitecture
 
-public struct HoroscopeDetailView: View {
-  let id: String
-  
-  public init(id: String) {
-    self.id = id
-  }
+public struct HoroscopeHistoryView: View {
   
   public var body: some View {
-    Text("Horoscope Detail View - ID: \(id)")
+    ScrollView {
+      VStack {
+        Text("History View")
+      }
+    }
   }
 }
