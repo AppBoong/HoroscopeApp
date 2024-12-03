@@ -8,15 +8,18 @@ public struct Root: Reducer {
     public var router: Router.State
     public var horoscope: Horoscope.State
     public var profile: Profile.State
+    public var historyState: HoroscopeHistory.State?
     
     public init(
       router: Router.State = .init(),
       horoscope: Horoscope.State = .init(),
-      profile: Profile.State = .init()
+      profile: Profile.State = .init(),
+      historyState: HoroscopeHistory.State? = nil
     ) {
       self.router = router
       self.horoscope = horoscope
       self.profile = profile
+      self.historyState = historyState
     }
   }
   
@@ -25,6 +28,7 @@ public struct Root: Reducer {
     case router(Router.Action)
     case horoscope(Horoscope.Action)
     case profile(Profile.Action)
+    case history(HoroscopeHistory.Action)
   }
   
   public init() {}
@@ -33,6 +37,7 @@ public struct Root: Reducer {
     Reduce { state, action in
       switch action {
       case .horoscope(.routeToHistory):
+        state.historyState = HoroscopeHistory.State()
         return .send(
           .router(
             .pushPath(
@@ -45,7 +50,8 @@ public struct Root: Reducer {
         
       case .router,
           .horoscope,
-          .profile:
+          .profile,
+          .history:
         return .none
       }
     }
@@ -59,6 +65,10 @@ public struct Root: Reducer {
     }
     Scope(state: \.profile, action: \.profile) {
       Profile()
+    }
+    
+    .ifLet(\.historyState, action: \.history) {
+      HoroscopeHistory()
     }
   }
 }
@@ -91,8 +101,15 @@ public struct RootView: View {
             case let .horoscope(path):
               switch path {
               case .history:
-                HoroscopeHistoryView()
-                  .navigationBarBackButtonHidden(false)
+                IfLetStore(
+                  store.scope(
+                    state: \.historyState,
+                    action: \.history
+                  )
+                ) { historyStore in
+                  HoroscopeHistoryView(store: historyStore)
+                }
+                .navigationBarBackButtonHidden(false)
               case .settings:
                 HoroscopeSettingsView()
                   .navigationBarBackButtonHidden(false)
@@ -151,10 +168,10 @@ public struct RootView: View {
           switch path {
           case let .horoscope(path):
             switch path {
-            case .history:
-              HoroscopeHistoryView()
             case .settings:
               HoroscopeSettingsView()
+            default:
+              EmptyView()
             }
           case let .profile(path):
             switch path {
@@ -177,10 +194,10 @@ public struct RootView: View {
           switch path {
           case let .horoscope(path):
             switch path {
-            case .history:
-              HoroscopeHistoryView()
             case .settings:
               HoroscopeSettingsView()
+            default:
+              EmptyView()
             }
           case let .profile(path):
             switch path {

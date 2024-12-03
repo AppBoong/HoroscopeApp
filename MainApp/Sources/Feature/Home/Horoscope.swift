@@ -47,6 +47,8 @@ public struct Horoscope: Reducer {
     public var horoscopeResult: String
     public var isLoading: Bool
     public var errorMessage: String?
+    public var recentHoroscopes: [HoroscopeItem] = []
+    public var historyState: HoroscopeHistory.State?
     
     public init(
       selectedDate: Date = Date(),
@@ -54,7 +56,8 @@ public struct Horoscope: Reducer {
       toneStyle: Core.ToneStyle = .lee,
       horoscopeResult: String = "",
       isLoading: Bool = false,
-      errorMessage: String? = nil
+      errorMessage: String? = nil,
+      historyState: HoroscopeHistory.State? = nil
     ) {
       self.selectedDate = selectedDate
       self.includeTime = includeTime
@@ -62,9 +65,11 @@ public struct Horoscope: Reducer {
       self.horoscopeResult = horoscopeResult
       self.isLoading = isLoading
       self.errorMessage = errorMessage
+      self.historyState = historyState
     }
   }
   
+  @CasePathable
   public enum Action: Equatable {
     case selectDate(Date)
     case toggleIncludeTime
@@ -72,9 +77,14 @@ public struct Horoscope: Reducer {
     case getHoroscope
     case horoscopeResponse(Result<GPTResponse, HoroscopeError>)
     case routeToHistory
+    case saveHoroscope
+    case loadRecentHoroscopes
+    case recentHoroscopesResponse(Result<[HoroscopeItem], HoroscopeError>)
+    case history(HoroscopeHistory.Action)
   }
   
   @Dependency(\.gptClient) var gptClient
+  @Dependency(\.horoscopeStorage) var storage
   
   public init() {}
   
@@ -130,8 +140,50 @@ public struct Horoscope: Reducer {
         return .none
         
       case .routeToHistory:
+        state.historyState = HoroscopeHistory.State()
+        return .none
+        
+      case .saveHoroscope:
+        let item = HoroscopeItem(
+          date: state.selectedDate,
+          content: state.horoscopeResult,
+          toneStyle: state.toneStyle.rawValue,
+          includeTime: state.includeTime
+        )
+        
+        return .run { send in
+          do {
+            try await storage.save(item)
+            await send(.loadRecentHoroscopes)
+          } catch {
+            await send(.recentHoroscopesResponse(.failure(.unknownError(error.localizedDescription))))
+          }
+        }
+        
+      case .loadRecentHoroscopes:
+        return .run { send in
+          do {
+            let items = try await storage.fetchRecent(5)
+            await send(.recentHoroscopesResponse(.success(items)))
+          } catch {
+            await send(.recentHoroscopesResponse(.failure(.unknownError(error.localizedDescription))))
+          }
+        }
+        
+      case let .recentHoroscopesResponse(.success(items)):
+        state.recentHoroscopes = items
+        return .none
+        
+      case let .recentHoroscopesResponse(.failure(error)):
+        state.errorMessage = error.localizedDescription
+        return .none
+        
+      case .history:
         return .none
       }
+    }
+    .ifLet(\.historyState, action: \.history) {
+      HoroscopeHistory()
     }
   }
 }
