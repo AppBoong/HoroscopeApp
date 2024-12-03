@@ -10,7 +10,7 @@ import ComposableArchitecture
 import Core
 import Moya
 
-public struct Horoscope: Reducer {
+public struct HoroscopeMain: Reducer {
   public enum HoroscopeError: LocalizedError, Equatable {
     case networkError
     case decodingError
@@ -132,7 +132,22 @@ public struct Horoscope: Reducer {
       case let .horoscopeResponse(.success(response)):
         state.isLoading = false
         state.horoscopeResult = response.choices.first?.message.content ?? ""
-        return .none
+        
+        let item = HoroscopeItem(
+          date: state.selectedDate,
+          content: state.horoscopeResult,
+          toneStyle: state.toneStyle.rawValue,
+          includeTime: state.includeTime
+        )
+        
+        return .run { send in
+          do {
+            try await storage.save(item)
+            await send(.loadRecentHoroscopes)
+          } catch {
+            Logger.error(error, category: Logger.storage)
+          }
+        }
         
       case let .horoscopeResponse(.failure(error)):
         state.isLoading = false
@@ -188,10 +203,10 @@ public struct Horoscope: Reducer {
   }
 }
 
-public struct HoroscopeView: View {
-  let store: StoreOf<Horoscope>
+public struct HoroscopeMainView: View {
+  let store: StoreOf<HoroscopeMain>
   
-  public init(store: StoreOf<Horoscope>) {
+  public init(store: StoreOf<HoroscopeMain>) {
     self.store = store
   }
   
@@ -218,7 +233,7 @@ public struct HoroscopeView: View {
     }
   }
   
-  private func dateSelectionSection(_ viewStore: ViewStoreOf<Horoscope>) -> some View {
+  private func dateSelectionSection(_ viewStore: ViewStoreOf<HoroscopeMain>) -> some View {
     VStack(alignment: .leading, spacing: 10) {
       HStack {
         Text("생년월일")
@@ -228,7 +243,7 @@ public struct HoroscopeView: View {
         DatePicker("",
                    selection: viewStore.binding(
                     get: \.selectedDate,
-                    send: Horoscope.Action.selectDate
+                    send: HoroscopeMain.Action.selectDate
                    ),
                    displayedComponents: [.date])
         .datePickerStyle(.compact)
@@ -244,14 +259,14 @@ public struct HoroscopeView: View {
         Toggle(
           isOn:  viewStore.binding(
             get: \.includeTime,
-            send: Horoscope.Action.toggleIncludeTime
+            send: HoroscopeMain.Action.toggleIncludeTime
           ),
           label: {
             if viewStore.includeTime {
               DatePicker("시간",
                          selection: viewStore.binding(
                           get: \.selectedDate,
-                          send: Horoscope.Action.selectDate
+                          send: HoroscopeMain.Action.selectDate
                          ),
                          displayedComponents: [.hourAndMinute])
               .datePickerStyle(.graphical)
@@ -271,7 +286,7 @@ public struct HoroscopeView: View {
         Picker("",
                selection: viewStore.binding(
           get: \.toneStyle,
-          send: Horoscope.Action.selectToneStyle
+          send: HoroscopeMain.Action.selectToneStyle
         )) {
           ForEach(Core.ToneStyle.allCases, id: \.self) { style in
             Text(style.rawValue)
@@ -283,7 +298,7 @@ public struct HoroscopeView: View {
     }
   }
   
-  private func resultSection(_ viewStore: ViewStoreOf<Horoscope>) -> some View {
+  private func resultSection(_ viewStore: ViewStoreOf<HoroscopeMain>) -> some View {
     VStack(alignment: .leading, spacing: 10) {
       Button(action: {
         viewStore.send(.getHoroscope)

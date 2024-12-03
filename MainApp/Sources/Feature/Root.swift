@@ -6,13 +6,13 @@ import Core
 public struct Root: Reducer {
   public struct State: Equatable {
     public var router: Router.State
-    public var horoscope: Horoscope.State
+    public var horoscope: HoroscopeMain.State
     public var profile: Profile.State
     public var historyState: HoroscopeHistory.State?
     
     public init(
       router: Router.State = .init(),
-      horoscope: Horoscope.State = .init(),
+      horoscope: HoroscopeMain.State = .init(),
       profile: Profile.State = .init(),
       historyState: HoroscopeHistory.State? = nil
     ) {
@@ -26,7 +26,7 @@ public struct Root: Reducer {
   @CasePathable
   public enum Action: Equatable {
     case router(Router.Action)
-    case horoscope(Horoscope.Action)
+    case horoscope(HoroscopeMain.Action)
     case profile(Profile.Action)
     case history(HoroscopeHistory.Action)
   }
@@ -61,8 +61,9 @@ public struct Root: Reducer {
     }
     
     Scope(state: \.horoscope, action: \.horoscope) {
-      Horoscope()
+      HoroscopeMain()
     }
+    
     Scope(state: \.profile, action: \.profile) {
       Profile()
     }
@@ -90,7 +91,7 @@ public struct RootView: View {
             send: { _ in .router(.popToRoot) }
           )
         ) {
-          HoroscopeView(
+          HoroscopeMainView(
             store: store.scope(
               state: \.horoscope,
               action: \.horoscope
