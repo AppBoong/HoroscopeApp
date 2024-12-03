@@ -35,4 +35,13 @@ public final class AppStorage {
     
     @UserDefaultsStorage(key: "user_zodiac_sign", defaultValue: "")
     public static var userZodiacSign: String
+    
+    @UserDefaultsStorage(key: "user_birth_date", defaultValue: Date())
+    public static var userBirthDate: Date
+    
+    @UserDefaultsStorage(key: "user_include_time", defaultValue: false)
+    public static var userIncludeTime: Bool
+    
+    @UserDefaultsStorage(key: "user_tone_style", defaultValue: ToneStyle.lee.rawValue)
+    public static var userToneStyle: String
 }

@@ -41,9 +41,7 @@ public struct HoroscopeMain: Reducer {
   }
   
   public struct State: Equatable {
-    public var selectedDate: Date
-    public var includeTime: Bool
-    public var toneStyle: Core.ToneStyle
+    public var title: String = "운세"
     public var horoscopeResult: String
     public var isLoading: Bool
     public var errorMessage: String?
@@ -51,17 +49,11 @@ public struct HoroscopeMain: Reducer {
     public var historyState: HoroscopeHistory.State?
     
     public init(
-      selectedDate: Date = Date(),
-      includeTime: Bool = false,
-      toneStyle: Core.ToneStyle = .lee,
       horoscopeResult: String = "",
       isLoading: Bool = false,
       errorMessage: String? = nil,
       historyState: HoroscopeHistory.State? = nil
     ) {
-      self.selectedDate = selectedDate
-      self.includeTime = includeTime
-      self.toneStyle = toneStyle
       self.horoscopeResult = horoscopeResult
       self.isLoading = isLoading
       self.errorMessage = errorMessage
@@ -71,9 +63,6 @@ public struct HoroscopeMain: Reducer {
   
   @CasePathable
   public enum Action: Equatable {
-    case selectDate(Date)
-    case toggleIncludeTime
-    case selectToneStyle(Core.ToneStyle)
     case getHoroscope
     case horoscopeResponse(Result<GPTResponse, HoroscopeError>)
     case routeToHistory
@@ -91,25 +80,18 @@ public struct HoroscopeMain: Reducer {
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
-      case let .selectDate(date):
-        state.selectedDate = date
-        return .none
-        
-      case .toggleIncludeTime:
-        state.includeTime.toggle()
-        return .none
-        
-      case let .selectToneStyle(style):
-        state.toneStyle = style
-        return .none
-        
       case .getHoroscope:
         state.isLoading = true
         state.errorMessage = nil
         
-        return .run { [date = state.selectedDate, includeTime = state.includeTime, toneStyle = state.toneStyle] send in
+        return .run { send in
           do {
-            let response = try await gptClient.getHoroscope(date, "", includeTime, toneStyle)
+            let response = try await gptClient.getHoroscope(
+              AppStorage.userBirthDate,
+              "",
+              AppStorage.userIncludeTime,
+              ToneStyle(rawValue: AppStorage.userToneStyle) ?? .lee
+            )
             await send(.horoscopeResponse(.success(response)))
           } catch {
             let horoscopeError: HoroscopeError
@@ -134,10 +116,10 @@ public struct HoroscopeMain: Reducer {
         state.horoscopeResult = response.choices.first?.message.content ?? ""
         
         let item = HoroscopeItem(
-          date: state.selectedDate,
+          date: AppStorage.userBirthDate,
           content: state.horoscopeResult,
-          toneStyle: state.toneStyle.rawValue,
-          includeTime: state.includeTime
+          toneStyle: AppStorage.userToneStyle,
+          includeTime: AppStorage.userIncludeTime
         )
         
         return .run { send in
@@ -160,10 +142,10 @@ public struct HoroscopeMain: Reducer {
         
       case .saveHoroscope:
         let item = HoroscopeItem(
-          date: state.selectedDate,
+          date: AppStorage.userBirthDate,
           content: state.horoscopeResult,
-          toneStyle: state.toneStyle.rawValue,
-          includeTime: state.includeTime
+          toneStyle: AppStorage.userToneStyle,
+          includeTime: AppStorage.userIncludeTime
         )
         
         return .run { send in
@@ -214,105 +196,45 @@ public struct HoroscopeMainView: View {
     WithViewStore(self.store, observe: { $0 }) { viewStore in
       ScrollView {
         VStack(spacing: 20) {
-          dateSelectionSection(viewStore)
-          
           resultSection(viewStore)
             .onTapGesture {
               hideKeyboard()
             }
-          
-          Button {
-            viewStore.send(.routeToHistory)
-          } label: {
-            Text("이전 운세")
-          }
         }
         .padding()
       }
       .scrollDismissesKeyboard(.interactively)
-    }
-  }
-  
-  private func dateSelectionSection(_ viewStore: ViewStoreOf<HoroscopeMain>) -> some View {
-    VStack(alignment: .leading, spacing: 10) {
-      HStack {
-        Text("생년월일")
-        
-        Spacer()
-        
-        DatePicker("",
-                   selection: viewStore.binding(
-                    get: \.selectedDate,
-                    send: HoroscopeMain.Action.selectDate
-                   ),
-                   displayedComponents: [.date])
-        .datePickerStyle(.compact)
-        .labelsHidden()
-      }
-     
-      
-      HStack {
-        Text("태어난 시간 포함")
-        
-        Spacer()
-        
-        Toggle(
-          isOn:  viewStore.binding(
-            get: \.includeTime,
-            send: HoroscopeMain.Action.toggleIncludeTime
-          ),
-          label: {
-            if viewStore.includeTime {
-              DatePicker("시간",
-                         selection: viewStore.binding(
-                          get: \.selectedDate,
-                          send: HoroscopeMain.Action.selectDate
-                         ),
-                         displayedComponents: [.hourAndMinute])
-              .datePickerStyle(.graphical)
-              .labelsHidden()
-            }
-          }
-        )
-        .toggleStyle(SwitchToggleStyle(tint: .blue))
-      }
-      .frame(height: 40)
-      
-      HStack {
-        Text("답변 스타일")
-        
-        Spacer()
-        
-        Picker("",
-               selection: viewStore.binding(
-          get: \.toneStyle,
-          send: HoroscopeMain.Action.selectToneStyle
-        )) {
-          ForEach(Core.ToneStyle.allCases, id: \.self) { style in
-            Text(style.rawValue)
-              .tag(style)
-          }
-        }
-        .pickerStyle(.automatic)
-      }
+      .navigationTitle(viewStore.title)
     }
   }
   
   private func resultSection(_ viewStore: ViewStoreOf<HoroscopeMain>) -> some View {
     VStack(alignment: .leading, spacing: 10) {
-      Button(action: {
-        viewStore.send(.getHoroscope)
-      }) {
-        if viewStore.isLoading {
-          ProgressView()
-            .progressViewStyle(CircularProgressViewStyle())
-        } else {
-          Text("운세 보기")
-            .frame(maxWidth: .infinity)
+      Spacer()
+      
+      HStack {
+        Button(action: {
+          viewStore.send(.getHoroscope)
+        }) {
+          if viewStore.isLoading {
+            ProgressView()
+              .progressViewStyle(CircularProgressViewStyle())
+          } else {
+            Text("운세 보기")
+              .frame(maxWidth: .infinity)
+          }
+        }
+        .buttonStyle(.borderedProminent)
+        .disabled(viewStore.isLoading)
+        
+        
+        Button {
+          viewStore.send(.routeToHistory)
+        } label: {
+          Text("이전 운세")
+            .frame(width: 100)
         }
       }
-      .buttonStyle(.borderedProminent)
-      .disabled(viewStore.isLoading)
       
       if !viewStore.horoscopeResult.isEmpty {
         Text("운세 결과")

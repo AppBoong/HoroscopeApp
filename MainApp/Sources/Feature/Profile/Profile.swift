@@ -7,23 +7,37 @@
 
 
 import SwiftUI
+
+import Core
+
 import ComposableArchitecture
 
 
 public struct Profile: Reducer {
   // MARK: - State
   public struct State: Equatable {
-    public init() {}
-    
     public var title: String = "프로필"
-    public var name: String = ""
-    public var birthDate: Date = Date()
+    public var birthDate: Date
+    public var includeTime: Bool
+    public var toneStyle: ToneStyle
+    
+    public init(
+        birthDate: Date = AppStorage.userBirthDate,
+        includeTime: Bool = AppStorage.userIncludeTime,
+        toneStyle: ToneStyle = ToneStyle(rawValue: AppStorage.userToneStyle) ?? .lee
+    ) {
+        self.birthDate = birthDate
+        self.includeTime = includeTime
+        self.toneStyle = toneStyle
+    }
   }
   
   // MARK: - Action
   public enum Action: Equatable {
-    case updateName(String)
     case updateBirthDate(Date)
+    case toggleIncludeTime
+    case updateToneStyle(ToneStyle)
+    case saveProfile
   }
   
   public init() {}
@@ -32,12 +46,23 @@ public struct Profile: Reducer {
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
-      case let .updateName(name):
-        state.name = name
-        return .none
-        
       case let .updateBirthDate(date):
         state.birthDate = date
+        return .none
+        
+      case .toggleIncludeTime:
+        state.includeTime.toggle()
+        return .none
+        
+      case let .updateToneStyle(style):
+        state.toneStyle = style
+        return .none
+        
+      case .saveProfile:
+        // UserDefaults에 저장
+        AppStorage.userBirthDate = state.birthDate
+        AppStorage.userIncludeTime = state.includeTime
+        AppStorage.userToneStyle = state.toneStyle.rawValue
         return .none
       }
     }
@@ -63,30 +88,39 @@ public struct ProfileView: View {
   // MARK: - Views
   @ViewBuilder
   private func content(_ viewStore: ViewStoreOf<Profile>) -> some View {
-    VStack(spacing: 20) {
-      Text(viewStore.title)
-        .font(.title)
-        .padding()
-      
-      TextField("이름을 입력하세요", text: viewStore.binding(
-        get: \.name,
-        send: Profile.Action.updateName
-      ))
-      .textFieldStyle(RoundedBorderTextFieldStyle())
-      .padding(.horizontal)
-      
-      DatePicker(
-        "생년월일",
-        selection: viewStore.binding(
-          get: \.birthDate,
-          send: Profile.Action.updateBirthDate
-        ),
-        displayedComponents: [.date]
-      )
-      .padding(.horizontal)
+    Form {
+        Section(header: Text("기본 정보")) {
+            DatePicker("생년월일",
+                selection: viewStore.binding(
+                    get: \.birthDate,
+                    send: Profile.Action.updateBirthDate
+                ),
+                displayedComponents: viewStore.includeTime ? [.date, .hourAndMinute] : [.date]
+            )
+            
+            Toggle("시간 포함",
+                isOn: viewStore.binding(
+                    get: \.includeTime,
+                    send: { _ in .toggleIncludeTime }
+                )
+            )
+            
+            Picker("답변 스타일", selection: viewStore.binding(
+                get: \.toneStyle,
+                send: Profile.Action.updateToneStyle
+            )) {
+                ForEach(ToneStyle.allCases, id: \.self) { style in
+                    Text(style.rawValue).tag(style)
+                }
+            }
+        }
+        
+        Section {
+            Button("저장") {
+                viewStore.send(.saveProfile)
+            }
+        }
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .padding()
-    .background(Color(.systemBackground))
+    .navigationTitle(viewStore.title)
   }
 }
