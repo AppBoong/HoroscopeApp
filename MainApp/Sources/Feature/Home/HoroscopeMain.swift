@@ -54,7 +54,7 @@ public struct HoroscopeMain: Reducer {
       isLoading: Bool = false,
       errorMessage: String? = nil,
       historyState: HoroscopeHistory.State? = nil,
-      selectedToneStyle: ToneStyle = ToneStyle(rawValue: AppStorage.userToneStyle) ?? .lee
+      selectedToneStyle: ToneStyle = ToneStyle(rawValue: AppStorage.userToneStyle) ?? .cat
     ) {
       self.horoscopeResult = horoscopeResult
       self.isLoading = isLoading
@@ -94,7 +94,7 @@ public struct HoroscopeMain: Reducer {
               AppStorage.userBirthDate,
               "",
               AppStorage.userIncludeTime,
-              ToneStyle(rawValue: AppStorage.userToneStyle) ?? .lee
+              ToneStyle(rawValue: AppStorage.userToneStyle) ?? .cat
             )
             await send(.horoscopeResponse(.success(response)))
           } catch {
@@ -212,7 +212,7 @@ public struct HoroscopeMainView: View {
             Text(style.rawValue).tag(style)
           }
         }
-        .pickerStyle(.segmented)
+        .pickerStyle(.automatic)
         .padding(.horizontal)
         
         ScrollView {

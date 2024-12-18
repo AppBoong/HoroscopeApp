@@ -42,6 +42,6 @@ public final class AppStorage {
     @UserDefaultsStorage(key: "user_include_time", defaultValue: false)
     public static var userIncludeTime: Bool
     
-    @UserDefaultsStorage(key: "user_tone_style", defaultValue: ToneStyle.lee.rawValue)
+    @UserDefaultsStorage(key: "user_tone_style", defaultValue: ToneStyle.cat.rawValue)
     public static var userToneStyle: String
 }
