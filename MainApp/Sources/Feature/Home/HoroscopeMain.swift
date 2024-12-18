@@ -47,17 +47,20 @@ public struct HoroscopeMain: Reducer {
     public var errorMessage: String?
     public var recentHoroscopes: [HoroscopeItem] = []
     public var historyState: HoroscopeHistory.State?
+    public var selectedToneStyle: ToneStyle
     
     public init(
       horoscopeResult: String = "",
       isLoading: Bool = false,
       errorMessage: String? = nil,
-      historyState: HoroscopeHistory.State? = nil
+      historyState: HoroscopeHistory.State? = nil,
+      selectedToneStyle: ToneStyle = ToneStyle(rawValue: AppStorage.userToneStyle) ?? .lee
     ) {
       self.horoscopeResult = horoscopeResult
       self.isLoading = isLoading
       self.errorMessage = errorMessage
       self.historyState = historyState
+      self.selectedToneStyle = selectedToneStyle
     }
   }
   
@@ -70,6 +73,7 @@ public struct HoroscopeMain: Reducer {
     case loadRecentHoroscopes
     case recentHoroscopesResponse(Result<[HoroscopeItem], HoroscopeError>)
     case history(HoroscopeHistory.Action)
+    case updateToneStyle(ToneStyle)
   }
   
   @Dependency(\.gptClient) var gptClient
@@ -177,6 +181,11 @@ public struct HoroscopeMain: Reducer {
         
       case .history:
         return .none
+        
+      case let .updateToneStyle(style):
+        state.selectedToneStyle = style
+        AppStorage.userToneStyle = style.rawValue
+        return .none
       }
     }
     .ifLet(\.historyState, action: \.history) {
@@ -194,14 +203,27 @@ public struct HoroscopeMainView: View {
   
   public var body: some View {
     WithViewStore(self.store, observe: { $0 }) { viewStore in
-      ScrollView {
-        VStack(spacing: 20) {
-          resultSection(viewStore)
-            .onTapGesture {
-              hideKeyboard()
-            }
+      VStack(spacing: 16) {
+        Picker("답변 스타일", selection: viewStore.binding(
+          get: \.selectedToneStyle,
+          send: HoroscopeMain.Action.updateToneStyle
+        )) {
+          ForEach(ToneStyle.allCases, id: \.self) { style in
+            Text(style.rawValue).tag(style)
+          }
         }
-        .padding()
+        .pickerStyle(.segmented)
+        .padding(.horizontal)
+        
+        ScrollView {
+          VStack(spacing: 20) {
+            resultSection(viewStore)
+              .onTapGesture {
+                hideKeyboard()
+              }
+          }
+          .padding()
+        }
       }
       .scrollDismissesKeyboard(.interactively)
       .navigationTitle(viewStore.title)

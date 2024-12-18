@@ -19,16 +19,13 @@ public struct Profile: Reducer {
     public var title: String = "프로필"
     public var birthDate: Date
     public var includeTime: Bool
-    public var toneStyle: ToneStyle
     
     public init(
         birthDate: Date = AppStorage.userBirthDate,
-        includeTime: Bool = AppStorage.userIncludeTime,
-        toneStyle: ToneStyle = ToneStyle(rawValue: AppStorage.userToneStyle) ?? .lee
+        includeTime: Bool = AppStorage.userIncludeTime
     ) {
         self.birthDate = birthDate
         self.includeTime = includeTime
-        self.toneStyle = toneStyle
     }
   }
   
@@ -36,7 +33,6 @@ public struct Profile: Reducer {
   public enum Action: Equatable {
     case updateBirthDate(Date)
     case toggleIncludeTime
-    case updateToneStyle(ToneStyle)
     case saveProfile
   }
   
@@ -54,15 +50,9 @@ public struct Profile: Reducer {
         state.includeTime.toggle()
         return .none
         
-      case let .updateToneStyle(style):
-        state.toneStyle = style
-        return .none
-        
       case .saveProfile:
-        // UserDefaults에 저장
         AppStorage.userBirthDate = state.birthDate
         AppStorage.userIncludeTime = state.includeTime
-        AppStorage.userToneStyle = state.toneStyle.rawValue
         return .none
       }
     }
@@ -104,15 +94,6 @@ public struct ProfileView: View {
                     send: { _ in .toggleIncludeTime }
                 )
             )
-            
-            Picker("답변 스타일", selection: viewStore.binding(
-                get: \.toneStyle,
-                send: Profile.Action.updateToneStyle
-            )) {
-                ForEach(ToneStyle.allCases, id: \.self) { style in
-                    Text(style.rawValue).tag(style)
-                }
-            }
         }
         
         Section {
