@@ -28,7 +28,8 @@ let package = Package(
       name: "Core",
       dependencies: [
         "Moya",
-        "Alamofire"
+        "Alamofire",
+        .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
       ],
       path: "Sources/Core"),
     .target(
