@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A4EAE2C2D7C845000BD6CA7 /* APIKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1A4EAE2B2D7C844900BD6CA7 /* APIKeys.plist */; };
 		3F393FBE2CF489130004D905 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F393FBD2CF489130004D905 /* Launch Screen.storyboard */; };
-		3F393FC02CF49DD90004D905 /* APIKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3F393FBF2CF49DD90004D905 /* APIKeys.plist */; };
 		3FBF9B4A2CDB7F10005581C5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBF9B492CDB7F10005581C5 /* main.swift */; };
 		3FBF9B4D2CDB81AD005581C5 /* MainApp in Frameworks */ = {isa = PBXBuildFile; productRef = 3FBF9B4C2CDB81AD005581C5 /* MainApp */; };
 		3FDEBB162CD8E2410022C2A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FDEBB152CD8E2410022C2A2 /* Assets.xcassets */; };
@@ -35,8 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A4EAE2B2D7C844900BD6CA7 /* APIKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = APIKeys.plist; sourceTree = "<group>"; };
 		3F393FBD2CF489130004D905 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		3F393FBF2CF49DD90004D905 /* APIKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = APIKeys.plist; sourceTree = "<group>"; };
 		3FABA9C72CDB956C0039D341 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3FBF9B482CDB7CC3005581C5 /* MainApp */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MainApp; sourceTree = "<group>"; };
 		3FBF9B492CDB7F10005581C5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 		3FDEBB0E2CD8E2400022C2A2 /* HoroscopeApp */ = {
 			isa = PBXGroup;
 			children = (
-				3F393FBF2CF49DD90004D905 /* APIKeys.plist */,
+				1A4EAE2B2D7C844900BD6CA7 /* APIKeys.plist */,
 				3FABA9C72CDB956C0039D341 /* Info.plist */,
 				3FDEBB152CD8E2410022C2A2 /* Assets.xcassets */,
 				3F393FBD2CF489130004D905 /* Launch Screen.storyboard */,
@@ -245,7 +245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F393FC02CF49DD90004D905 /* APIKeys.plist in Resources */,
+				1A4EAE2C2D7C845000BD6CA7 /* APIKeys.plist in Resources */,
 				3F393FBE2CF489130004D905 /* Launch Screen.storyboard in Resources */,
 				3FDEBB162CD8E2410022C2A2 /* Assets.xcassets in Resources */,
 			);
