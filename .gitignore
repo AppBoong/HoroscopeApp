@@ -32,3 +32,4 @@ Package.resolved
 # API Keys
 APIKeys.plist
 **/APIKeys.plist
+HoroscopeApp/APIKeys.plist
